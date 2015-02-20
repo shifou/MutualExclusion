@@ -64,14 +64,14 @@ public class Multicast {
 		for(int i=0; i<length; i++){
 			curVec[i] =  (vectorMap.get(mes.groupName))[i];
 
-			System.out.print(curVec[i]+" ");
+		//	System.out.print(curVec[i]+" ");
 		}
 		String check = judge(curVec, recVec);
-		System.out.println("------");
+		//System.out.println("------");
 		//System.out.println("\n"+check);
 		switch(check){
 		case "rec":
-			//System.out.println("receive multicast"+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
+			System.out.println("receive multicast");//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
 			mp.messages.offer(mes);
 			// TODO: 
 			vectorMap.get(mes.groupName)[mp.gid.get(mes.groupName).get(mes.src)] = mes.multicastVector[mp.gid.get(mes.groupName).get(mes.src)];

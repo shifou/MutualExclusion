@@ -161,8 +161,8 @@ public class MessagePasser {
 				break;
 			default:
 				//System.out.println("send");
-				if(mes.multicast)
-					System.out.println("multicast: "+hold.toString());
+				//if(mes.multicast)
+				//	System.out.println("multicast: "+hold.toString());
 				sendMessage(mes);
 				break;
 		}
@@ -273,10 +273,12 @@ public class MessagePasser {
 		{
 			//System.out.println("check queue: "+messages.isEmpty());
 			Message mes = messages.poll();
+			/*
 			if(this.logicalTime)
 				System.out.println(username+" rec timestamp: "+this.lt.toString());
 			else
 				System.out.println(username+" rec timestamp: "+this.vt.toString());
+			*/
 			if(log)
 			{
 				//System.out.println("-------");
