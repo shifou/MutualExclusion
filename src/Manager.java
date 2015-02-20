@@ -125,6 +125,18 @@ public class Manager {
 					
 				}
 					break;
+				case "request":
+					if(hold[1].equals("y"))
+						messagePasser.log=true;
+				messagePasser.mutex.request(seq,vec);
+				case "release":
+					if(hold[1].equals("y"))
+						messagePasser.log=true;
+				messagePasser.mutex.release();
+				break;
+				case "stat":
+					System.out.println(messagePasser.mutex.stat());
+					break;
 				default:
 					System.err.println("Illegal input format! Please enter again!");
 				}

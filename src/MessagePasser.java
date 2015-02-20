@@ -24,6 +24,7 @@ public class MessagePasser {
 	public long last;
 	public int nodeNum;
 	public int id;
+	public Mutex mutex;
 	public boolean log;
 	public LinkedHashMap<String,Integer> u2i =new LinkedHashMap<String,Integer>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
@@ -69,7 +70,7 @@ public class MessagePasser {
 		else
 			vt = new VectorTimeStamp(nodeNum);
 		//System.out.println(vt.toString());
-		multicast = new Multicast(this); 
+		
 		for(String hh:groups.keySet())
 		{
 			HashMap<String,Integer> fk= new HashMap<String,Integer>();
@@ -80,6 +81,8 @@ public class MessagePasser {
 			}
 			gid.put(hh, fk);
 		}
+		multicast = new Multicast(this); 
+		mutex = new Mutex(this);
 		user = new User(username, port,messageRec,sockets, streams,nodes,multicast,config);
 		new Thread(user).start();
 		
