@@ -1,0 +1,79 @@
+
+groups :
+  - name : Group1
+    members :
+      - alice
+      - bob
+      - def
+  - name : Group2
+    members :
+      - alice
+      - charlie
+configuration :
+- name : alice
+  ip   : 127.0.0.1
+  port : 12344
+- name : bob
+  ip   : 127.0.0.1
+  port : 14255
+- name : charlie
+  ip   : 127.0.0.1
+  port : 12355
+- name : def
+  ip   : 127.0.0.1
+  port : 12644
+
+sendRules :
+  - action : delay     
+    dest   : def
+    kind   : Ack
+receiveRules :
+  - action : drop
+    src    : alice
+    kind   : tt
+    dest   : bob
+
+  # - action : ss 
+  #   src    : alice
+  #   dest   : bob
+  #   kind   : Ack
+  # - action : duplicate
+  #   src    : charlie
+  #   dest   : bob
+  #   kind   : Ack
+  # - action : drop 
+  #   src    : bob
+  #   dest   : alice
+  #   kind   : Ack
+  #   seqNum : 4
+  # - action : duplicate
+  #   src    : bob
+  #   dest   : alice
+  #   kind   : Lookup
+  # - action : duplicate
+  #   src    : charlie
+  #   dest   : bob
+  #   kind   : Lookup
+  # - action : delay
+  #   src    : alice
+  #   dest   : charlie
+    
+#receiveRules :
+  # - action : drop      
+  #   src    : charlie       
+  #   dest   : bob
+  #   kind   : Ack
+  #   duplicate : false 
+  # - action : delay
+  #   src    : charlie
+  #   dest   : bob
+  #   kind   : Lookup
+  # - action : drop
+  #   src    : bob
+  #   dest   : alice
+  #   kind   : Lookup
+  # - action : drop
+  #   src    : alice
+  #   dest   : charlie
+  #   kind   : Ack
+

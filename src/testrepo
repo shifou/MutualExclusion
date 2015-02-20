@@ -1,0 +1,93 @@
+Test one Action at a time
+
+	Test case 1: From alice to bob 
+	test function: Action:”delay” using send rule 1
+
+	input:
+			send#bob#process#Lookup#alice to bob
+			send#bob#process#Ack#alice to bob
+			send#bob#process#Lookup#alice to bob
+			send#bob#process#Ack#alice to bob
+
+	Passed 
+			
+
+
+	
+	Test case 2: From charlie to bob
+
+	test function: Action:”duplicate” using send rule 2 and recv rule 1
+
+	input:
+			send#bob#process#Ack#charlie to bob
+			send#bob#process#Ack#charlie to bob
+
+	Passed
+
+
+	Test case 3: From bob to alice
+
+	test function: Action:”drop”, using send rule 3
+
+	input:
+			send#alice#process#Ack#bob to alice
+			send#alice#process#Ack#bob to alice
+			send#alice#process#Ack#bob to alice
+			send#alice#process#Ack#bob to alice(which is supposed to be dropped)
+			send#alice#process#Ack#bob to alice
+
+	Passed
+
+
+
+	Test case 4: From charlie to bob
+
+	test function: Action:"delay in recv side", using recv rule 2
+
+	input:
+			{charlie}	send#bob#process#Lookup#charlie to bob		(be delayed on recv side)
+			{alice}		send#bob#process#Ack#alice to bob			(triger to process the delayed 																message)
+
+
+	Passed
+
+
+
+Mixed test:
+
+
+	Test case 1: From bob to alice
+
+	test function: Action:”duplicate + drop”, using send rule 4 to duplicate and recv rule 3 to drop
+
+	input:
+			send#alice#process#Lookup#bob to alice		(which is supposed to be duplicated and then be dropped)
+			send#alice#process#Ack#bob to alice 		(won't be duplicated and dropped)
+	
+	Passed
+
+
+	Test case 2: From charlie to bob
+
+	test function: Action:”duplicate + delay”, using send rule 1 to duplicate and recv rule 3 to delay
+
+	input:
+			send#bob#process#Lookup#charlie to bob			(which is supposed to be duplicated and then be 											delayed)
+   {alice}  send#bob#process#Ack#alice to bob			(which is supposed to be dropped when receive and 													and causes the process of delayed 			     													message)
+
+
+
+   	Passed
+
+
+	Test case 3: From alice to charlie
+
+	test function: Action:”delay + drop”, using send rule to delay and recv rule to drop
+
+	input:
+			send#charlie#process#Ack#alice to charlie 	(supposed to be delayed and then be dropped)
+			send#charlie#process#Lookup#alice to charlie	(supposed to be delayed but will not be dropped)
+			send#bob#process#Ack#bob to charlie		(is used to triger peer to process the delayed message)
+
+	Passed
+
