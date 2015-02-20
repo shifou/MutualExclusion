@@ -1,4 +1,4 @@
 
 public enum MutexState {
-	HELD, RELEASED, REQUEST;
+	HOLD, RELEASE, REQUEST;
 }

@@ -1,8 +1,11 @@
 
 public class Mutex {
 	MessagePasser mp;
+	MutexState st=MutexState.HOLD;
+	int req, rel, vote;
 	public Mutex(MessagePasser messagePasser){
 		mp = messagePasser;
+		req=rel=vote=0;
 	}
 	
 	public void request(int seq, boolean logical) {
