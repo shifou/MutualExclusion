@@ -11,7 +11,10 @@ public class configFileParse {
 		private ArrayList<LinkedHashMap<String,Object>> sendRules;
 		private ArrayList<LinkedHashMap<String,Object>> recvRules;
 		private ArrayList<LinkedHashMap<String,Object>> groups;
-		
+		private boolean properOne;    // same node in a row
+		private boolean properTwo;    // same node in a column
+		private boolean properThree;  // diagonal 
+		private boolean properFour;   // two group has one intersection node
 		@SuppressWarnings("unchecked")
 		public configFileParse(String configFile) throws FileNotFoundException {
 			  
@@ -19,6 +22,10 @@ public class configFileParse {
 			    sendRules = new ArrayList<LinkedHashMap<String,Object>>();
 			    recvRules = new ArrayList<LinkedHashMap<String,Object>>();
 			    groups = new ArrayList<LinkedHashMap<String,Object>>();
+			    properOne = true;
+			    properTwo = true;
+			    properThree = true;
+			    properFour = true;
 			    InputStream input = new FileInputStream(new File(configFile));
 			    Yaml yaml = new Yaml();
 			    LinkedHashMap<String,Object> data = (LinkedHashMap<String, Object>)yaml.load(input);
@@ -68,14 +75,116 @@ public class configFileParse {
 			    		
 			    	}
 				}
+			    
+			    
+			    // check if the group members accord with the four properties
+			    
+			    
 			  
 			}
-			
 		
+		@SuppressWarnings("unchecked")
+		private void checkGroups()
+		{
+			int numOfnode = NodeInfo.size();
+			int numOfgroup = groups.size();
+			
+			if(numOfnode == 0 || numOfnode != numOfgroup || numOfgroup == 0)
+			{
+				this.properOne = false;
+				this.properTwo = false;
+				this.properThree = false;
+				this.properFour = false;
+				return;
+			}
+			
+			int[][] groupMap = new int[numOfnode][numOfnode];
+			Arrays.fill(groupMap,0);
+			
+			// 1. each row has the same number of X
+			int lenOfone = groups.get(0).size();
+			for(int i =0; i < numOfgroup; i++)
+			{
+				
+				if(lenOfone != groups.get(i).size())
+				{
+					this.properOne = false;
+					return;
+				}
+			}
+			
+			int memOf = ((ArrayList<String>)NodeInfo.get(0).get("memberOf")).size();
+			// 2. each column has the same number of X
+			for(int i=0; i < numOfnode; i++)
+			{
+				// add memberOf
+				if(((ArrayList<String>)NodeInfo.get(i).get("memberOf")).size() != memOf)
+				{
+					this.properTwo = false;
+					return;
+				}
+			}
+			
+			// add node into the group map
+			LinkedHashMap<String, Integer> nameAndId = new LinkedHashMap<String, Integer>();
+			nameAndId = getAllID();
+			for(int i = 0; i<numOfnode; i++){
+				for(int j =0; j<memOf; j++)
+				{
+					int id = nameAndId.get(((ArrayList<String>)NodeInfo.get(i).get("memberOf")).get(j)).intValue();
+					groupMap[i][id] = 1;
+				}
+			}
+			// 3. diagonal has X
+			for(int i = 0; i< numOfnode; i++)
+			{
+				if(groupMap[i][i] != 1)
+				{
+					this.properThree = false;
+					return;
+				}
+			}
+			
+			// 4. for two rows, there are two X in the same column (IS A MUST)
+			for(int i=0; i< numOfnode; i++)
+			{
+				for(int j=i; j<numOfnode;j++)
+				{
+					int flag = 0;
+					for(int k =0; k< numOfnode; k++)
+					{
+						if(groupMap[i][k] == 1 && groupMap[j][k] ==1)
+						{
+							flag = 1;
+						}
+					}
+					if(flag == 0)
+					{
+						this.properFour = false;
+						return;
+					}
+				}
+			}
+	
+		}
+		
+		
+		/*public ArrayList<String> memberOf(String user)
+		{
+			for(LinkedHashMap<String,Object> t : NodeInfo)
+			{
+				if(((String)t.get("name")).equals(user))
+				{
+					t.get("memberOf")
+				}
+			}
+		}*/
 		public List<LinkedHashMap<String, Object>> get_config()
 		{
 				return NodeInfo;
 		}
+		
+		
 		// return groups
 		@SuppressWarnings("unchecked")
 		public LinkedHashMap<String, ArrayList<String>> getGroups()
