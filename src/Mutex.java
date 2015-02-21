@@ -49,6 +49,7 @@ public class Mutex {
 	public void recRequest(Message mes)
 	{
 		this.reqrec++;
+		
 	}
 	public void release() {
 		if(this.st == MutexState.RELEASE){
