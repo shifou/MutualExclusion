@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
@@ -46,11 +47,62 @@ public class Mutex {
 		}
 		new LockWatcher(this).start();
 	}
+	
 	public void recRequest(Message mes)
 	{
-		this.reqrec++;
+		if(voted == true)
+		{
+			if(insert(reqQueue,mes) == 1) // insert successfully
+			{
+				this.reqrec++;
+			}
+		}else{			//if it hasn't voted yet, vote immediately
+			
+			this.sendVote(mes.des);
+			this.reqrec++;
+			voted = true;
+		}	
 		
 	}
+		private void sendVote(String dest) throws FileNotFoundException
+		{
+			Message vote = new Message(mp.username, dest, "Agree", "Vote", "OK");
+			vote.ms = MutexState.VOTE;
+			mp.send(vote);
+			
+		}
+		private int insert(LinkedList<Message> linkedList, Message mes) {
+		
+		// TODO Auto-generated method stub
+		if(linkedList.isEmpty())
+		{
+			linkedList.add(mes);
+			return 1;
+		}
+		
+		for(int i = 0; i < linkedList.size();i++)
+		{
+			Message tmp = linkedList.get(i);
+	
+			
+			if(mes.lt.getLogical() <= tmp.lt.getLogical())
+			{
+				linkedList.add(i,mes);
+				return 1;
+			}else if(mes.lt.getLogical() == tmp.lt.getLogical())
+			{
+				return 0; // if mes's logical time stamp equals timestamp in the queue, drop it
+			}
+			
+			if(i == tmp.multicastVector.length-1)
+			{
+				linkedList.addLast(mes);
+				return 1;
+			}
+		}
+		return 0;
+	}
+		
 	public void release() {
 		if(this.st == MutexState.RELEASE){
 			System.out.println("exit CS already");
@@ -76,10 +128,26 @@ public class Mutex {
 			System.out.println("sending request error");
 		}
 	}
+	
+	/*
+	 * After receive Release Message, which means CS is currently available to other nodes:
+	 * 		1. set the voted boolean to false
+	 * 			a. vote to the request in the top of Queue
+	 * 			b. if queue is empty, don't vote
+	 */
+	
 	public void recRelease(Message mes)
 	{
+		this.voted = false;
 		this.relrec++;
+		if(!reqQueue.isEmpty())
+		{
+			
+			this.sendVote(mes.des);
+		}
+		
 	}
+	
 	private void recVote(Message mes) {
 		// TODO Auto-generated method stub
 		vote++;
@@ -90,7 +158,7 @@ public class Mutex {
 		switch(mes.ms)
 		{
 		case REQUEST:
-			this.recRequest(mes);
+			this.recRequest(mes);   //TODO:
 			break;
 		case  RELEASE:
 			this.recRelease(mes);
@@ -105,7 +173,7 @@ public class Mutex {
 	
 	}
 
-
+	
 	public String stat() {
 		String s="request send: "+req+"\trequest rec: "+reqrec+"\trelease send: "+rel+"\trelease rec: "+relrec+"\tvote num: "+vote+"\tenter cs: "+enter;
 		if(this.st==MutexState.HOLD)
