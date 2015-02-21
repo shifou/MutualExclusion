@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
@@ -7,11 +9,14 @@ public class Mutex {
 	int req, reqrec,rel, relrec,vote,enter;
 	public boolean voted;
 	public ConcurrentLinkedQueue<Message> delayQueue=new ConcurrentLinkedQueue<Message>();
-	
+	public HashSet<String> voteMem;
+	public int groupSize;
 	public Mutex(MessagePasser messagePasser){
+		voteMem=new HashSet<String>();
 		mp = messagePasser;
 		req=reqrec=rel=relrec=vote=enter=0;
 		voted=false;
+		groupSize = mp.groups.get("group_"+mp.username).size();
 	}
 	
 	public void request() 
@@ -25,7 +30,21 @@ public class Mutex {
 			return;
 		}
 		req++;
-		
+		Message message = new Message(mp.username,"","action", "kind","ME");
+		message.multicast=true;
+		message.mutex=true;
+		message.ms=MutexState.REQUEST;
+		message.logicalTime=true;
+		message.groupName="group_"+mp.username;
+		message.groupSize=mp.groups.get(message.groupName).size();
+
+		try {
+			mp.multicast.send(message);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("sending request error");
+		}
+		new LockWatcher(this).start();
 	}
 	public void recRequest(Message mes)
 	{
@@ -41,6 +60,20 @@ public class Mutex {
 			return;
 		}
 		this.rel++;
+		Message message = new Message(mp.username,"","action", "kind","ME");
+		message.multicast=true;
+		message.mutex=true;
+		message.ms=MutexState.RELEASE;
+		message.logicalTime=true;
+		message.groupName="group_"+mp.username;
+		message.groupSize=groupSize;
+		this.voteMem.clear();
+		try {
+			mp.multicast.send(message);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("sending request error");
+		}
 	}
 	public void recRelease(Message mes)
 	{
@@ -83,5 +116,30 @@ public class Mutex {
 		if(this.st==MutexState.VOTE)
 			s+="\nvote for cs";
 		return s;
+	}
+}
+class LockWatcher extends Thread{
+	
+	Mutex mutex;
+	public LockWatcher(Mutex mutex){
+		this.mutex = mutex;
+	}
+	
+	public void run(){
+		boolean wait = false;
+		while(this.mutex.st != MutexState.HOLD){
+			if(!wait){
+				System.out.println("BLOCKED!");
+				wait = true;
+			}
+			
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("GET THE LOCK!");
+		wait = false;
 	}
 }

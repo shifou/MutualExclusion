@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 public class Manager {
 	public static void main(String[] args) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		int seq=0;
 		boolean flag=true,vec=false;;
 		while(flag)
 		{
@@ -113,8 +112,7 @@ public class Manager {
 						break;
 					}
 					message.groupSize=messagePasser.groups.get(hold[1]).size();
-					message.set_seqNum(seq++);
-					if(hold[5].equals("y"))
+										if(hold[5].equals("y"))
 						messagePasser.log=true;
 				try {
 					messagePasser.multicast.send(message);
