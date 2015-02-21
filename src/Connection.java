@@ -25,9 +25,11 @@ public class Connection implements Runnable {
 	public boolean log;
 	public configFileParse config;
 	public Multicast multicast=null;
-	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ConcurrentLinkedQueue mq, ConcurrentHashMap<String, Socket> sk, ConcurrentHashMap<String, ObjectOutputStream> st, Multicast multicast,configFileParse config) throws IOException {
+	public Mutex mutex=null;
+	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ConcurrentLinkedQueue mq, ConcurrentHashMap<String, Socket> sk, ConcurrentHashMap<String, ObjectOutputStream> st, Multicast multicast,Mutex mx, configFileParse config) throws IOException {
 		// TODO Auto-generated constructor stub
 		this.config=config;
+		mutex=mx;
 		socket = slaveSocket;
 		objOutput = out;
 		this.name=name;
@@ -66,7 +68,7 @@ public class Connection implements Runnable {
 
 					if(log==false)
 					{
-						if(mes.multicast)
+						if(mes.multicast && mes.mutex==false)
 						{
 							String hold = config.recvRule(mes);
 							 
@@ -93,7 +95,33 @@ public class Connection implements Runnable {
 								}
 							}
 						}
-						else
+						else if(mes.multicast && mes.mutex)
+						{
+							String hold = config.recvRule(mes);
+							 
+							switch(hold){
+							case "drop":
+								break;
+							case "duplicate":
+								//System.out.println("receive: duplicate");
+								if(mes.duplicate)
+									this.mutex.receive(mes);
+								//messageRec.add(mes);
+								while(!this.mutex.delayQueue.isEmpty()){
+									this.mutex.receive(this.mutex.delayQueue.poll());
+								}
+								break;
+							case "delay":
+								System.out.println("receive: delay");
+								this.mutex.delayQueue.offer(mes);
+								break;
+							default:
+								this.mutex.receive(mes);
+								while(!this.mutex.delayQueue.isEmpty()){
+									this.mutex.receive(this.mutex.delayQueue.poll());
+								}
+							}
+						}
 							messageQueue.offer(mes);
 					}
 					else

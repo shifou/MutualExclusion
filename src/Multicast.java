@@ -6,9 +6,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class Multicast {
-	MessagePasser mp;
-	HashMap<String, int[]> vectorMap = new HashMap<>();
-	HashMap<String,LinkedList<Message>> holdBackQueueList = new HashMap<String,LinkedList<Message>>();
+	public MessagePasser mp;
+	public HashMap<String, int[]> vectorMap = new HashMap<>();
+	public HashMap<String,LinkedList<Message>> holdBackQueueList = new HashMap<String,LinkedList<Message>>();
 	public ConcurrentLinkedQueue<Message> delayQueue=new ConcurrentLinkedQueue<Message>();
 	public Multicast(MessagePasser messagePasser){
 		this.mp = messagePasser;

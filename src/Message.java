@@ -20,6 +20,7 @@ public class Message implements Comparable<Message>,Serializable{
 	public LogicalTimeStamp lt;
 	public VectorTimeStamp vt;
 	public int groupSize=-1;
+	public MutexState ms;
 	public boolean mutex=false;
 	public int[] multicastVector = {};
 	public Message(String hostname,String dest, String action, String kind, String data){

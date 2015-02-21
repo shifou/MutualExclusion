@@ -59,7 +59,6 @@ public class Manager {
 						break;
 					}
 					Message message = new Message(args[1],hold[1],hold[2], hold[3],hold[4]);
-					message.set_seqNum(seq++);
 					if(hold[5].equals("y"))
 						messagePasser.log=true;
 				try {
@@ -126,9 +125,14 @@ public class Manager {
 				}
 					break;
 				case "request":
+					if(messagePasser.valid==false)
+					{
+						System.out.println("group construction rules failed");
+						continue;
+					}
 					if(hold[1].equals("y"))
 						messagePasser.log=true;
-				messagePasser.mutex.request(seq,vec);
+				messagePasser.mutex.request();
 				case "release":
 					if(hold[1].equals("y"))
 						messagePasser.log=true;

@@ -30,7 +30,8 @@ public class User implements Runnable{
 	public LinkedHashMap<String, nodeInfo> nodes;
 	public boolean log;
 	public configFileParse config;
-	public User(String name,int port,ConcurrentLinkedQueue messageRec, ConcurrentHashMap<String, Socket> sockets, ConcurrentHashMap<String, ObjectOutputStream> streams, LinkedHashMap<String, nodeInfo> nodes,Multicast multicast,configFileParse config)
+	public Mutex mx = null;
+	public User(String name,int port,ConcurrentLinkedQueue messageRec, ConcurrentHashMap<String, Socket> sockets, ConcurrentHashMap<String, ObjectOutputStream> streams, LinkedHashMap<String, nodeInfo> nodes,Multicast multicast,Mutex mutex, configFileParse config)
 	{
 		this.config=config;
 		this.multicast=multicast;
@@ -41,6 +42,7 @@ public class User implements Runnable{
 		messageQueue=messageRec;
 		this.username=name;
 		running = true;
+		mx=mutex;
         try {
          serverSocket = new ServerSocket((short)port);
      } catch (IOException e) {
@@ -103,7 +105,7 @@ public class User implements Runnable{
             st.put(name, out);
 			Connection handler;
 			if(log==false)
-             handler = new Connection(name,slaveSocket,out,objInput,messageQueue,sk,st,this.multicast,this.config);
+             handler = new Connection(name,slaveSocket,out,objInput,messageQueue,sk,st,this.multicast,this.mx,this.config);
 			else
 				handler = new Connection(name,slaveSocket,out,objInput,this.messageRec,logicalTime,sk,st,config);
              //System.out.println(slaveSocket.getInetAddress()+"\t"+slaveSocket.getPort());

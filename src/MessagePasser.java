@@ -20,6 +20,7 @@ public class MessagePasser {
 	public int port;
 	public boolean logicalTime;
 	public LogicalTimeStamp lt;
+	public int seq;
 	public VectorTimeStamp vt;
 	public long last;
 	public int nodeNum;
@@ -37,6 +38,7 @@ public class MessagePasser {
 	public LinkedHashMap<String,ArrayList<String>> groups = new LinkedHashMap<String,ArrayList<String>>();
 	public Multicast multicast;	
 	public HashMap<String, HashMap<String,Integer>> gid= new HashMap<String, HashMap<String,Integer>>();
+	public boolean valid=true;
 	public MessagePasser(String configuration_filename, String local_name,boolean lg) throws FileNotFoundException {
 		config = new configFileParse(configuration_filename);
 		filename = configuration_filename;
@@ -44,6 +46,7 @@ public class MessagePasser {
 		last=hold.lastModified();
 		System.out.println("last: "+last);
 		username = local_name;
+		seq=0;
 		port = config.getPortbyName(username);
 		if(port==-1)
 		{
@@ -83,7 +86,7 @@ public class MessagePasser {
 		}
 		multicast = new Multicast(this); 
 		mutex = new Mutex(this);
-		user = new User(username, port,messageRec,sockets, streams,nodes,multicast,config);
+		user = new User(username, port,messageRec,sockets, streams,nodes,multicast,mutex,config);
 		new Thread(user).start();
 		
 	}
@@ -128,6 +131,8 @@ public class MessagePasser {
 			System.out.println("can not find this node information in the config");
 			return;
 		}
+
+		mes.set_seqNum(seq++);
 		
 		//System.out.println(hold+"-----");
 		
@@ -215,7 +220,7 @@ public class MessagePasser {
 				 Connection handler;
 				 out.writeObject(username);
 				 //out.writeChars(this.username);
-	             handler = new Connection(mes.des,sendd,out,objInput,messageRec,sockets,streams,multicast,config);
+	             handler = new Connection(mes.des,sendd,out,objInput,messageRec,sockets,streams,multicast,mutex,config);
 	             new Thread(handler).start();
 		         
 			} catch (UnknownHostException e) {
