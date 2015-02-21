@@ -72,7 +72,13 @@ public class Multicast {
 		switch(check){
 		case "rec":
 			System.out.println("receive multicast");//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
-			mp.messages.offer(mes);
+			if(mes.mutex)
+			{
+				System.out.println("add to mutex");
+				mp.mutex.receive(mes);
+			}
+			else
+				mp.messages.offer(mes);
 			// TODO: 
 			vectorMap.get(mes.groupName)[mp.gid.get(mes.groupName).get(mes.src)] = mes.multicastVector[mp.gid.get(mes.groupName).get(mes.src)];
 			forward(mes);
@@ -114,7 +120,13 @@ public class Multicast {
 					break;
 				}else{
 					System.out.println("accept message from buffer");
-					mp.messages.offer(tmp);
+					if(mes.mutex)
+					{
+						System.out.println("add to mutex");
+						mp.mutex.receive(mes);
+					}
+					else
+						mp.messages.offer(mes);
 					vectorMap.get(tmp.groupName)[mp.gid.get(tmp.groupName).get(tmp.src)] = tmp.multicastVector[mp.gid.get(tmp.groupName).get(tmp.src)];
 					forward(tmp);
 					this.holdBackQueueList.get(tmp.groupName).removeFirst();

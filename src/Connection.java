@@ -68,7 +68,7 @@ public class Connection implements Runnable {
 
 					if(log==false)
 					{
-						if(mes.multicast && mes.mutex==false)
+						if(mes.multicast )
 						{
 							String hold = config.recvRule(mes);
 							 
@@ -95,33 +95,7 @@ public class Connection implements Runnable {
 								}
 							}
 						}
-						else if(mes.multicast && mes.mutex)
-						{
-							String hold = config.recvRule(mes);
-							 
-							switch(hold){
-							case "drop":
-								break;
-							case "duplicate":
-								//System.out.println("receive: duplicate");
-								if(mes.duplicate)
-									this.mutex.receive(mes);
-								//messageRec.add(mes);
-								while(!this.mutex.delayQueue.isEmpty()){
-									this.mutex.receive(this.mutex.delayQueue.poll());
-								}
-								break;
-							case "delay":
-								System.out.println("receive: delay");
-								this.mutex.delayQueue.offer(mes);
-								break;
-							default:
-								this.mutex.receive(mes);
-								while(!this.mutex.delayQueue.isEmpty()){
-									this.mutex.receive(this.mutex.delayQueue.poll());
-								}
-							}
-						}
+						else
 							messageQueue.offer(mes);
 					}
 					else

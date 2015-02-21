@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -8,8 +9,8 @@ public class Mutex {
 	MessagePasser mp;
 	MutexState st=MutexState.HOLD;
 	int req, reqrec,rel, relrec,vote,enter;
+	public HashMap<String,LinkedList<Message>> holdBackQueueList = new HashMap<String,LinkedList<Message>>();
 	public boolean voted;
-	public ConcurrentLinkedQueue<Message> delayQueue=new ConcurrentLinkedQueue<Message>();
 	public HashSet<String> voteMem;
 	public int groupSize;
 	public Mutex(MessagePasser messagePasser){
