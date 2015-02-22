@@ -19,9 +19,9 @@ public class Mutex {
 		mp = messagePasser;
 		req=reqrec=rel=relrec=vote=enter=0;
 		voted=false;
-		groupSize = mp.groups.get("group_"+mp.username).size();
+		groupSize = mp.groups.get("Group_"+mp.username).size();
 		votes=new HashSet<String>();
-		for(String hold: mp.groups.get("group_"+mp.username))
+		for(String hold: mp.groups.get("Group_"+mp.username))
 		{
 			if(hold.equals(mp.username)==false)
 			voteMem.add(hold);
@@ -45,7 +45,7 @@ public class Mutex {
 		message.mutex=true;
 		message.ms=MutexState.REQUEST;
 		message.logicalTime=true;
-		message.groupName="group_"+mp.username;
+		message.groupName="Group_"+mp.username;
 		message.groupSize=mp.groups.get(message.groupName).size();
 
 		try {
@@ -139,7 +139,7 @@ public class Mutex {
 		message.mutex=true;
 		message.ms=MutexState.RELEASE;
 		message.logicalTime=true;
-		message.groupName="group_"+mp.username;
+		message.groupName="Group_"+mp.username;
 		message.groupSize=groupSize;
 		try {
 			mp.multicast.send(message);
