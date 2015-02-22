@@ -88,7 +88,7 @@ public class Mutex {
 			vote.des = mes.src;
 			vote.data = "OK";
 			vote.seq=mp.seq;
-			vote.lt=mp.lt;
+			vote.lt=mp.lt.clone(mp.lt);
 			vote.kind = "Vote";
 			vote.action = "normal";
 			vote.ms = MutexState.VOTE;
