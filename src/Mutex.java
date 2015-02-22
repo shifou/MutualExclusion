@@ -78,6 +78,8 @@ public class Mutex {
 			Message vote = mes.clone(mes);
 			vote.set_src(mp.username);
 			vote.set_hostname(mp.username);
+			vote.multicast=false;
+			vote.mutex=false;
 			vote.des = mes.src;
 			vote.data = "OK";
 			vote.kind = "Vote";
