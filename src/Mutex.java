@@ -96,6 +96,9 @@ public class Mutex {
 		if(linkedList.isEmpty())
 		{
 			linkedList.add(mes);
+			System.out.println("===========");
+			System.out.println(linkedList);
+			System.out.println("===========");
 			return;
 		}
 		
@@ -123,6 +126,9 @@ public class Mutex {
 			
 			
 		}
+		System.out.println("===========");
+		System.out.println(linkedList);
+		System.out.println("===========");
 	}
 		
 	public void release() {
