@@ -138,6 +138,7 @@ public class Manager {
 					if(hold[1].equals("y"))
 						messagePasser.log=true;
 				messagePasser.mutex.request();
+				break;
 				case "release":
 					if(hold.length!=2)
 					{
