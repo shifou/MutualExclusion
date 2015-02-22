@@ -35,7 +35,7 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp>,Serializable
 			}
 			
 		}
-		public int Increment(int currentID)
+		public synchronized int Increment(int currentID)
 		{
 			if(currentID<len)
 			{

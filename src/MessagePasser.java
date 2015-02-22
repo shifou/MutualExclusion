@@ -84,8 +84,8 @@ public class MessagePasser {
 			}
 			gid.put(hh, fk);
 		}
-		multicast = new Multicast(this); 
 		mutex = new Mutex(this);
+		multicast = new Multicast(this); 
 		user = new User(username, port,messageRec,sockets, streams,nodes,multicast,mutex,config);
 		new Thread(user).start();
 		

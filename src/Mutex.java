@@ -7,11 +7,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Mutex {
 	MessagePasser mp;
-	MutexState st=MutexState.HOLD;
+	public volatile MutexState st=MutexState.HOLD;
 	int req, reqrec,rel, relrec,vote,enter;
 	public HashMap<String,LinkedList<Message>> holdBackQueueList = new HashMap<String,LinkedList<Message>>();
 	public boolean voted;
 	public HashSet<String> voteMem;
+	public HashSet<String> votes;
 	public int groupSize;
 	public Mutex(MessagePasser messagePasser){
 		voteMem=new HashSet<String>();
@@ -19,6 +20,12 @@ public class Mutex {
 		req=reqrec=rel=relrec=vote=enter=0;
 		voted=false;
 		groupSize = mp.groups.get("group_"+mp.username).size();
+		votes=new HashSet<String>();
+		for(String hold: mp.groups.get("group_"+mp.username))
+		{
+			if(hold.equals(mp.username)==false)
+			voteMem.add(hold);
+		}
 	}
 	
 	public void request() 
@@ -32,6 +39,7 @@ public class Mutex {
 			return;
 		}
 		req++;
+		this.st=MutexState.REQUEST;
 		Message message = new Message(mp.username,"","action", "kind","ME");
 		message.multicast=true;
 		message.mutex=true;
@@ -121,7 +129,6 @@ public class Mutex {
 		message.logicalTime=true;
 		message.groupName="group_"+mp.username;
 		message.groupSize=groupSize;
-		this.voteMem.clear();
 		try {
 			mp.multicast.send(message);
 		} catch (FileNotFoundException e) {
@@ -152,7 +159,22 @@ public class Mutex {
 	private void recVote(Message mes) {
 		// TODO Auto-generated method stub
 		vote++;
-		
+		System.out.println("get vote from: "+ mes.src);
+		if(!votes.contains(mes.src)&&voteMem.contains(mes.src))
+			votes.add(mes.src);
+		System.out.println("have votes: "+ this.vote+" total need: "+(this.groupSize-1));
+		if(mp.logicalTime)
+		{
+			mp.lt.Increment();
+		}else
+			mp.vt.Increment(mp.u2i.get(mes.src));
+		if(vote==groupSize-1)
+		{
+			System.out.println("enter CS");
+			vote=0;
+			votes.clear();
+			st=MutexState.HOLD;
+		}
 	}
 
 	public synchronized void receive(Message mes) {
