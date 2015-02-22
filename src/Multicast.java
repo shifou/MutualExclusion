@@ -42,6 +42,9 @@ public class Multicast {
 			}else{
 				if(message.mutex)
 				{	
+					mp.lt.Increment();
+					mp.lt.Increment();
+					message.seq=mp.seq++;
 					message.des=message.src;
 					mp.mutex.receive(message);
 				}
@@ -54,6 +57,8 @@ public class Multicast {
 	public synchronized void receive(Message mes) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		//mp.reconfig();
+		System.out.print("rec  now lg: "+mp.lt.toString()+" mes lg: "+mes.lt.toString());
+		
 		if(!mp.logicalTime)
 		{
 			mp.vt.updateTimeStamp(mes.vt);
@@ -61,6 +66,7 @@ public class Multicast {
 		}else{
 			mp.lt.updateTimeStamp(mes.lt);
 			mp.lt.Increment();
+			System.out.println("now changed to: "+mp.lt.toString());
 		}
 		
 		int[] recVec = mes.multicastVector;
@@ -77,7 +83,7 @@ public class Multicast {
 		//System.out.println("\n"+check);
 		switch(check){
 		case "rec":
-			System.out.println("receive multicast:" +mes.toString());//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
+			System.out.println("receive multicast:" +mes.shortMsg());//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
 			if(mes.mutex)
 			{
 				System.out.println("add to mutex");
@@ -128,6 +134,8 @@ public class Multicast {
 					//System.out.println("accept message from buffer");
 					if(mes.mutex)
 					{
+						mp.lt.updateTimeStamp(mes.lt);
+						mp.lt.Increment();
 						System.out.println("add to mutex");
 						mp.mutex.receive(mes);
 					}

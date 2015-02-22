@@ -138,4 +138,7 @@ public class Message implements Comparable<Message>,Serializable{
 		return 0;				// return 0 if concurrent
 		
 	}
+	public String shortMsg() {
+		return this.src+" to "+this.des+"seq "+seq+" kind: "+this.kind+" time: "+this.lt.toString()+" groupname "+this.groupName;
+	}
 }
