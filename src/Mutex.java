@@ -242,6 +242,14 @@ public class Mutex {
 			s+="\nvote for cs";
 		return s;
 	}
+
+	public String check() {
+		// TODO Auto-generated method stub
+		if(this.voted)
+			return "voted";
+		else
+			return st.toString();
+	}
 }
 class LockWatcher extends Thread{
 	

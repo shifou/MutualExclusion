@@ -153,7 +153,7 @@ public class Manager {
 					System.out.println(messagePasser.mutex.stat());
 					break;
 				case "check":
-					System.out.println(messagePasser.mutex.st);
+					System.out.println(messagePasser.mutex.check());
 					break;
 				default:
 					System.err.println("Illegal input format! Please enter again!");
