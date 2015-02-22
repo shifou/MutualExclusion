@@ -64,6 +64,7 @@ public class Mutex {
 			this.reqrec++;
 		
 		}else{			//if it hasn't voted yet, vote immediately
+			System.out.println("send vote to: "+mes.src);
 			if(mes.src.equals(mp.username))
 			{
 				recVote(mes);
@@ -88,7 +89,6 @@ public class Mutex {
 			vote.action = "normal";
 			vote.ms = MutexState.VOTE;
 			mp.send(vote);
-			
 		}
 		private void insert(LinkedList<Message> linkedList, Message mes) {
 		
@@ -142,6 +142,7 @@ public class Mutex {
 		message.logicalTime=true;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=groupSize;
+		st=MutexState.RELEASE;
 		try {
 			mp.multicast.send(message);
 		} catch (FileNotFoundException e) {
@@ -185,7 +186,7 @@ public class Mutex {
 		if(vote==groupSize)
 		{
 			enter++;
-			System.out.println("enter CS");
+			//System.out.println("enter CS");
 			vote=0;
 			votes.clear();
 			st=MutexState.HOLD;
@@ -256,7 +257,7 @@ class LockWatcher extends Thread{
 				e.printStackTrace();
 			}
 		}
-		System.out.println("GET THE LOCK!");
+		System.out.println("Enter in CS");
 		wait = false;
 	}
 }
