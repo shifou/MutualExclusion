@@ -8,6 +8,7 @@ public class Manager {
 	public static void main(String[] args) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		boolean flag=true,vec=false;;
+		/*
 		while(flag)
 		{
 			System.out.println("input vector or logical: ");
@@ -29,9 +30,10 @@ public class Manager {
 				System.out.println("exit");
 			}
 		}
+		*/
 		MessagePasser messagePasser=null;
 		try {
-			messagePasser = new MessagePasser(args[0], args[1],vec);
+			messagePasser = new MessagePasser(args[0], args[1],true);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 
