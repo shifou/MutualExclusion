@@ -47,6 +47,7 @@ public class Mutex {
 		message.groupName="Group_"+mp.username;
 		message.groupSize=mp.groups.get(message.groupName).size();
 		message.lt=mp.lt;
+		message.seq=mp.seq++;
 		try {
 			mp.multicast.send(message);
 		} catch (FileNotFoundException e) {
@@ -146,8 +147,10 @@ public class Mutex {
 		message.mutex=true;
 		message.ms=MutexState.RELEASE;
 		message.logicalTime=true;
+		message.seq=mp.seq++;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=groupSize;
+		message.lt=mp.lt;
 		st=MutexState.RELEASE;
 		try {
 			mp.multicast.send(message);
