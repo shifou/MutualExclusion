@@ -246,7 +246,7 @@ public class MessagePasser {
 		{
 			return;
 		}
-		System.out.println("-----------sending "+mes.toString());
+		System.out.println("-----------sending "+mes.shortMsg());
 		out.writeObject(mes);
 		out.flush();
 		out.reset();

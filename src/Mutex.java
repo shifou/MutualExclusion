@@ -47,7 +47,7 @@ public class Mutex {
 		message.groupName="Group_"+mp.username;
 		message.groupSize=mp.groups.get(message.groupName).size();
 		message.lt=mp.lt;
-		message.seq=mp.seq++;
+		message.seq=mp.seq;
 		try {
 			mp.multicast.send(message);
 		} catch (FileNotFoundException e) {
@@ -84,9 +84,10 @@ public class Mutex {
 			vote.set_hostname(mp.username);
 			vote.multicast=false;
 			vote.mutex=false;
+			vote.logicalTime=true;
 			vote.des = mes.src;
 			vote.data = "OK";
-			vote.seq++;
+			vote.seq=mp.seq;
 			vote.lt=mp.lt;
 			vote.kind = "Vote";
 			vote.action = "normal";
@@ -149,7 +150,7 @@ public class Mutex {
 		message.mutex=true;
 		message.ms=MutexState.RELEASE;
 		message.logicalTime=true;
-		message.seq=mp.seq++;
+		message.seq=mp.seq;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=groupSize;
 		message.lt=mp.lt;
@@ -207,12 +208,6 @@ public class Mutex {
 	}
 
 	public synchronized void receive(Message mes) {
-		if(mp.logicalTime)
-		{	
-			mp.lt.updateTimeStamp(mes.lt);
-			mp.lt.Increment();
-		}else
-			mp.vt.Increment(mp.u2i.get(mes.src));
 		switch(mes.ms)
 		{
 		case REQUEST:

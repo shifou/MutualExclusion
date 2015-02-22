@@ -99,6 +99,17 @@ public class Connection implements Runnable {
 						{
 							if(mes.ms!=null && mes.ms == MutexState.VOTE)
 							{
+								System.out.print("rec  now lg: "+mutex.mp.lt.toString()+" mes lg: "+mes.lt.toString());
+								
+								if(!mutex.mp.logicalTime)
+								{
+									mutex.mp.vt.updateTimeStamp(mes.vt);
+									mutex.mp.vt.Increment(mutex.mp.id);
+								}else{
+									mutex.mp.lt.updateTimeStamp(mes.lt);
+									mutex.mp.lt.Increment();
+									System.out.println("now changed to: "+mutex.mp.lt.toString());
+								}
 								mutex.receive(mes);
 							}
 							else
