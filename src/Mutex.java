@@ -99,7 +99,9 @@ public class Mutex {
 		// TODO Auto-generated method stub
 		if(linkedList.isEmpty())
 		{
-			Message tmp = mes.clone(mes);
+			Message tmp = new Message("","","","","");
+			tmp = mes.clone(mes);
+			tmp.lt = mes.lt;
 			linkedList.add(tmp);
 			System.out.println("===========");
 			System.out.println(linkedList);
@@ -114,7 +116,9 @@ public class Mutex {
 			
 			if(mes.lt.getLogical() < tmp.lt.getLogical())
 			{
-				Message tp = mes.clone(mes);
+				Message tp = new Message("","","","","");
+				tp = mes.clone(mes);
+				tp.lt = mes.lt;
 				linkedList.add(i,tp);
 				
 				break;
@@ -122,12 +126,16 @@ public class Mutex {
 			{
 				if(i != tmp.multicastVector.length-1)
 				{
-					Message tp = mes.clone(mes);
+					Message tp = new Message("","","","","");
+					tp=mes.clone(mes);
+					tp.lt = mes.lt;
 					linkedList.add(i+1,tp);
 					
 					break;
 				}else{
-					Message tp = mes.clone(mes);
+					Message tp = new Message("","","","","");
+					tp=mes.clone(mes);
+					tp.lt = mes.lt;
 					linkedList.addLast(tp);
 					
 					break;
