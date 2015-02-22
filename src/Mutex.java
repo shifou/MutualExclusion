@@ -166,6 +166,7 @@ public class Mutex {
 		{
 			Message tmp = holdBackQueueList.removeFirst();
 			this.sendVote(tmp);
+			voted = true;
 		}
 		
 		
@@ -177,7 +178,7 @@ public class Mutex {
 		System.out.println("get vote from: "+ mes.src);
 		if(!votes.contains(mes.src)&&voteMem.contains(mes.src))
 			votes.add(mes.src);
-		System.out.println("have votes: "+ this.vote+" total need: "+(this.groupSize-1));
+		System.out.println("have votes: "+ this.vote+" total need: "+(this.groupSize));
 		if(mp.logicalTime)
 		{
 			mp.lt.Increment();
