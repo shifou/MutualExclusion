@@ -96,7 +96,14 @@ public class Connection implements Runnable {
 							}
 						}
 						else
+						{
+							if(mes.ms!=null && mes.ms == MutexState.VOTE)
+							{
+								mutex.receive(mes);
+							}
+							else
 							messageQueue.offer(mes);
+						}
 					}
 					else
 					{
