@@ -39,7 +39,7 @@ public class Mutex {
 		}
 		req++;
 		this.st=MutexState.REQUEST;
-		Message message = new Message(mp.username,"","action", "kind","ME");
+		Message message = new Message(mp.username,"","Request", "Request","ME");
 		message.multicast=true;
 		message.mutex=true;
 		message.ms=MutexState.REQUEST;
@@ -65,7 +65,11 @@ public class Mutex {
 				this.reqrec++;
 			}
 		}else{			//if it hasn't voted yet, vote immediately
-			
+			if(mes.src.equals(mp.username))
+			{
+				recVote(mes);
+			}
+			else
 			this.sendVote(mes);
 			this.reqrec++;
 			voted = true;
@@ -133,7 +137,7 @@ public class Mutex {
 			return;
 		}
 		this.rel++;
-		Message message = new Message(mp.username,"","action", "kind","ME");
+		Message message = new Message(mp.username,"","RELEASE", "RELEASE","ME");
 		message.multicast=true;
 		message.mutex=true;
 		message.ms=MutexState.RELEASE;
@@ -221,7 +225,7 @@ public class Mutex {
 
 	
 	public String stat() {
-		String s="request send: "+req+"\trequest rec: "+reqrec+"\trelease send: "+rel+"\trelease rec: "+relrec+"\tvote num: "+vote+"\tenter cs: "+enter;
+		String s="request send: "+req+"\trequest rec: "+reqrec+"\trelease send: "+rel+"\trelease rec: "+relrec+"\trec vote num: "+vote+"\tenter cs: "+enter;
 		if(this.st==MutexState.HOLD)
 			s+="\nin cs now";
 		if(this.st==MutexState.RELEASE)

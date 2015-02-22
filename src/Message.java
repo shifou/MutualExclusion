@@ -20,7 +20,7 @@ public class Message implements Comparable<Message>,Serializable{
 	public LogicalTimeStamp lt;
 	public VectorTimeStamp vt;
 	public int groupSize=-1;
-	public MutexState ms;
+	public MutexState ms=null;
 	public boolean mutex=false;
 	public int[] multicastVector = {};
 	public Message(String hostname,String dest, String action, String kind, String data){
@@ -43,6 +43,8 @@ public class Message implements Comparable<Message>,Serializable{
 		ans.groupSize=old.groupSize;
 		ans.multicast=old.multicast;
 		ans.multicastVector=old.multicastVector;
+		ans.ms=old.ms;
+		ans.mutex=old.mutex;
 		return ans;
 	}
 	/*
@@ -83,9 +85,9 @@ public class Message implements Comparable<Message>,Serializable{
 	public String toString()
 	{
 		if(logicalTime)
-			return src+" to "+des+" seq: "+seq+" timestamp: "+lt.toString()+" act: "+action+" kind: "+kind+" dup: "+duplicate+" Data: "+data+" "+groupSize+" "+groupName+" "+getMultiVector(); 
+			return src+" to "+des+" seq: "+seq+" timestamp: "+lt.toString()+" act: "+action+" kind: "+kind+" dup: "+duplicate+" Data: "+data+" "+groupSize+" "+groupName+" "+getMultiVector()+" "+ms+" "+multicast+" "+mutex; 
 		else
-			return src+" to "+des+" seq: "+seq+" timestamp: "+vt.toString()+" act: "+action+" kind: "+kind+" dup: "+duplicate+" Data: "+data+" "+groupSize+" "+groupName+" "+getMultiVector(); 
+			return src+" to "+des+" seq: "+seq+" timestamp: "+vt.toString()+" act: "+action+" kind: "+kind+" dup: "+duplicate+" Data: "+data+" "+groupSize+" "+groupName+" "+getMultiVector()+" "+ms+" "+multicast+" "+mutex; 
 		
 	}
 	public String getMultiVector() {

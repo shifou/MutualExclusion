@@ -61,7 +61,8 @@ public class MessagePasser {
 		id = config.getId(username); // ID starts from 0, if can't find return -1
 		if(id==-1)
 		{
-			System.out.println("can not find the user");
+			
+			System.out.println("can not find the user: "+username);
 			return;
 		}
 		u2i=config.getAllID();
@@ -107,7 +108,7 @@ public class MessagePasser {
 		port = config.getPortbyName(username);
 		if(port==-1)
 		{
-			System.out.println("can not find the user info in config");
+			System.out.println("can not find the user info in config: "+username);
 			return false;
 		}
 		id = config.getId(username); // ID starts from 0, if can't find return -1
@@ -132,7 +133,8 @@ public class MessagePasser {
 		//System.out.println(mes.des);
 		if(this.nodes.containsKey(mes.des)==false)
 		{
-			System.out.println("can not find this node information in the config");
+			System.out.println("can not find this node information in the config: "+mes.des);
+			System.out.println(mes.toString());
 			return;
 		}
 

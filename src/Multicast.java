@@ -40,6 +40,9 @@ public class Multicast {
 				hold.des = dest;
 				mp.send(hold);
 			}else{
+				if(message.mutex)
+					mp.mutex.receive(message);
+				else
 				mp.messages.offer(message);
 			}
 		}
@@ -71,7 +74,7 @@ public class Multicast {
 		//System.out.println("\n"+check);
 		switch(check){
 		case "rec":
-			//System.out.println("receive multicast");//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
+			System.out.println("receive multicast:" +mes.toString());//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
 			if(mes.mutex)
 			{
 				System.out.println("add to mutex");
