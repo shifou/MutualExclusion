@@ -1,40 +1,40 @@
 
 groups :
-  - name : Group_alice
-    members :
-      - alice
-      - bob
-      - charlie
-  - name : Group_bob
-    members :
-      - bob
-      - daphnie
-      - frank
-  - name : Group_charlie
-    members :
-      - charlie
-      - eason
-      - frank
-  - name : Group_daphnie
-    members :
-      - alice
-      - daphnie
-      - eason
-  - name : Group_eason
-    members :
-      - bob
-      - eason
-      - gorgie
-  - name : Group_frank
-    members :
-      - alice
-      - frank
-      - gorgie
-   - name : Group_gorgie
-    members :
-      - charlie
-      - daphnie
-      - gorgie
+- name : Group_alice
+  members :
+    - alice
+    - bob
+    - charlie
+- name : Group_bob
+  members :
+    - bob
+    - daphnie
+    - frank
+- name : Group_charlie
+  members :
+    - charlie
+    - eason
+    - frank
+- name : Group_daphnie
+  members :
+    - alice
+    - daphnie
+    - eason
+- name : Group_eason
+  members :
+    - bob
+    - eason
+    - gorgie
+- name : Group_frank
+  members :
+    - alice
+    - frank
+    - gorgie
+- name : Group_gorgie
+  members :
+    - charlie
+    - daphnie
+    - gorgie
 
 configuration :
 - name : alice
