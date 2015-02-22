@@ -156,15 +156,16 @@ public class Multicast {
 	
 	private void forward(Message mes) throws FileNotFoundException
 	{
-		
 		ArrayList<String> group = mp.groups.get(mes.groupName);
 		for(int i = 0; i < group.size(); i ++)
 		{
-			if(!group.get(i).equals(mp.username))
+			if(group.get(i).equals(mp.username) ==false&&group.get(i).equals(mes.src)==false )
 			{
 				Message hold = mes.clone(mes);
-				hold.src = mp.username;
+				//hold.src = mp.username;
 				hold.des = group.get(i);
+				System.out.println("forward: "+hold.toString());
+				
 				mp.send(hold);
 			}
 		}
