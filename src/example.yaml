@@ -1,65 +1,91 @@
 
 groups :
-  - name : GroupAlice
+  - name : Group_alice
     members :
       - alice
       - bob
       - charlie
-  - name : GroupBob
+  - name : Group_bob
     members :
       - bob
       - daphnie
       - frank
-  - name : GroupCharlie
+  - name : Group_charlie
     members :
       - charlie
       - eason
       - frank
-  - name : GroupDaphnie
+  - name : Group_daphnie
     members :
       - alice
       - daphnie
       - eason
-  - name : GroupEason
+  - name : Group_eason
     members :
       - bob
       - eason
       - gorgie
-  - name : GroupFrank
+  - name : Group_frank
     members :
       - alice
       - frank
       - gorgie
-   - name : GroupGorgie
+   - name : Group_gorgie
     members :
       - charlie
       - daphnie
       - gorgie
-      
+
 configuration :
 - name : alice
   ip   : 127.0.0.1
   port : 12341
   memberOf:
-    - Group1
+    - Group_alice
+    - Group_daphnie
+    - Group_frank
 - name : bob
   ip   : 127.0.0.1
   port : 12342
+  memberOf:
+    - Group_alice
+    - Group_bob
+    - Group_eason
 - name : charlie
   ip   : 127.0.0.1
   port : 12343
+  memberOf:
+    - Group_alice
+    - Group_charlie
+    - Group_gorgie
 - name : daphnie
   ip   : 127.0.0.1
   port : 12344
+  memberOf:
+    - Group_bob
+    - Group_daphnie
+    - Group_gorgie
 - name : eason
   ip   : 127.0.0.1
   port : 12345
+  memberOf:
+    - Group_charlie
+    - Group_daphnie
+    - Group_eason
 - name : frank
   ip   : 127.0.0.1
   port : 12346
+  memberOf:
+    - Group_bob
+    - Group_charlie
+    - Group_frank
 - name : gorgie
   ip   : 127.0.0.1
   port : 12347
+  memberOf:
+    - Group_eason
+    - Group_frank
+    - Group_gorgie
 
 
 sendRules :
