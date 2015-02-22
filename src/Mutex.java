@@ -165,6 +165,10 @@ public class Mutex {
 		if(!holdBackQueueList.isEmpty())
 		{
 			Message tmp = holdBackQueueList.removeFirst();
+			System.out.println("in queue: "+tmp.toString());
+			if(tmp.src.equals(mp.username))
+				recVote(tmp);
+			else
 			this.sendVote(tmp);
 		}
 		
@@ -177,7 +181,7 @@ public class Mutex {
 		System.out.println("get vote from: "+ mes.src);
 		if(!votes.contains(mes.src)&&voteMem.contains(mes.src))
 			votes.add(mes.src);
-		System.out.println("have votes: "+ this.vote+" total need: "+(this.groupSize-1));
+		System.out.println("have votes: "+ this.vote+" total need: "+this.groupSize);
 		if(mp.logicalTime)
 		{
 			mp.lt.Increment();
@@ -252,7 +256,7 @@ class LockWatcher extends Thread{
 			}
 			
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
