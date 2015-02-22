@@ -179,7 +179,7 @@ public class Mutex {
 	private void recVote(Message mes) {
 		// TODO Auto-generated method stub
 		vote++;
-		System.out.println("get vote from: "+ mes.src);
+		System.out.println("get vote from: "+ mes.src+"\t"+mes.toString());
 		if(!votes.contains(mes.src)&&voteMem.contains(mes.src))
 			votes.add(mes.src);
 
