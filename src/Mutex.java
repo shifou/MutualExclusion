@@ -246,7 +246,7 @@ public class Mutex {
 	public String check() {
 		// TODO Auto-generated method stub
 		if(this.voted)
-			return "voted";
+			return "voted and "+st.toString();
 		else
 			return st.toString();
 	}
