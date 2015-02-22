@@ -150,7 +150,7 @@ public class MessagePasser {
 			this.lt.Increment();
 			//System.out.println("send timestamp from: "+username+" with id "+id+" "+this.lt.toString());
 			
-			mes.lt=this.lt;
+			mes.lt=this.lt.clone(this.lt);
 		}
 		else
 		{
@@ -316,7 +316,7 @@ public class MessagePasser {
 			{
 				this.lt.updateTimeStamp(mes.lt);
 				this.lt.Increment();
-				mes.lt=this.lt;
+				mes.lt=this.lt.clone(this.lt);;
 			}
 			else
 			{

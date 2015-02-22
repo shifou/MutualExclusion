@@ -46,7 +46,7 @@ public class Mutex {
 		message.logicalTime=true;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=mp.groups.get(message.groupName).size();
-		message.lt=mp.lt;
+		message.lt=mp.lt.clone(mp.lt);
 		message.seq=mp.seq;
 		try {
 			mp.multicast.send(message);
@@ -153,7 +153,7 @@ public class Mutex {
 		message.seq=mp.seq;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=groupSize;
-		message.lt=mp.lt;
+		message.lt=mp.lt.clone(mp.lt);
 		st=MutexState.RELEASE;
 		try {
 			mp.multicast.send(message);
