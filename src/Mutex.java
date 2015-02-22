@@ -170,6 +170,7 @@ public class Mutex {
 				recVote(tmp);
 			else
 			this.sendVote(tmp);
+			voted = true;
 		}
 		
 		
@@ -181,7 +182,11 @@ public class Mutex {
 		System.out.println("get vote from: "+ mes.src);
 		if(!votes.contains(mes.src)&&voteMem.contains(mes.src))
 			votes.add(mes.src);
+<<<<<<< HEAD
+		System.out.println("have votes: "+ this.vote+" total need: "+(this.groupSize));
+=======
 		System.out.println("have votes: "+ this.vote+" total need: "+this.groupSize);
+>>>>>>> aa7430497bb40ee89011012a5c8231daaf3c7b72
 		if(mp.logicalTime)
 		{
 			mp.lt.Increment();
