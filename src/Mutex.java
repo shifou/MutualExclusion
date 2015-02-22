@@ -60,10 +60,9 @@ public class Mutex {
 	{
 		if(voted == true)
 		{
-			if(insert(holdBackQueueList,mes) == 1) // insert successfully
-			{
-				this.reqrec++;
-			}
+			insert(holdBackQueueList,mes); // insert successfully
+			this.reqrec++;
+		
 		}else{			//if it hasn't voted yet, vote immediately
 			if(mes.src.equals(mp.username))
 			{
@@ -91,13 +90,13 @@ public class Mutex {
 			mp.send(vote);
 			
 		}
-		private int insert(LinkedList<Message> linkedList, Message mes) {
+		private void insert(LinkedList<Message> linkedList, Message mes) {
 		
 		// TODO Auto-generated method stub
 		if(linkedList.isEmpty())
 		{
 			linkedList.add(mes);
-			return 1;
+			return;
 		}
 		
 		for(int i = 0; i < linkedList.size();i++)
@@ -124,7 +123,6 @@ public class Mutex {
 			
 			
 		}
-		return 0;
 	}
 		
 	public void release() {
