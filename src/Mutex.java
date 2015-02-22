@@ -46,7 +46,7 @@ public class Mutex {
 		message.logicalTime=true;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=mp.groups.get(message.groupName).size();
-
+		message.lt=mp.lt;
 		try {
 			mp.multicast.send(message);
 		} catch (FileNotFoundException e) {
@@ -189,10 +189,6 @@ public class Mutex {
 		if(!votes.contains(mes.src)&&voteMem.contains(mes.src))
 			votes.add(mes.src);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1819f1bc7da9083bfb61284856bdfa728ab24bf4
 		System.out.println("have votes: "+ this.vote+" total need: "+this.groupSize);
 		
 		if(vote==groupSize)
