@@ -1,27 +1,66 @@
 
 groups :
-  - name : Group1
+  - name : GroupAlice
     members :
       - alice
       - bob
-      - def
-  - name : Group2
+      - charlie
+  - name : GroupBob
+    members :
+      - bob
+      - daphnie
+      - frank
+  - name : GroupCharlie
+    members :
+      - charlie
+      - eason
+      - frank
+  - name : GroupDaphnie
     members :
       - alice
+      - daphnie
+      - eason
+  - name : GroupEason
+    members :
+      - bob
+      - eason
+      - gorgie
+  - name : GroupFrank
+    members :
+      - alice
+      - frank
+      - gorgie
+   - name : GroupGorgie
+    members :
       - charlie
+      - daphnie
+      - gorgie
+      
 configuration :
 - name : alice
   ip   : 127.0.0.1
-  port : 12344
+  port : 12341
+  memberOf:
+    - Group1
 - name : bob
   ip   : 127.0.0.1
-  port : 14255
+  port : 12342
 - name : charlie
   ip   : 127.0.0.1
-  port : 12355
-- name : def
+  port : 12343
+- name : daphnie
   ip   : 127.0.0.1
-  port : 12644
+  port : 12344
+- name : eason
+  ip   : 127.0.0.1
+  port : 12345
+- name : frank
+  ip   : 127.0.0.1
+  port : 12346
+- name : gorgie
+  ip   : 127.0.0.1
+  port : 12347
+
 
 sendRules :
   - action : delay     

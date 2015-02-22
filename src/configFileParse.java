@@ -128,13 +128,21 @@ public class configFileParse {
 			// add node into the group map
 			LinkedHashMap<String, Integer> nameAndId = new LinkedHashMap<String, Integer>();
 			nameAndId = getAllID();
-			for(int i = 0; i<numOfnode; i++){
-				for(int j =0; j<memOf; j++)
+			LinkedHashMap<String, ArrayList<String>> groupInfo = new LinkedHashMap<String, ArrayList<String>>();
+			groupInfo = getGroups();
+			int g = 0;
+			for(String group : groupInfo.keySet())
+			{
+				
+				for(String tmpG : groupInfo.get(group))
 				{
-					int id = nameAndId.get(((ArrayList<String>)NodeInfo.get(i).get("memberOf")).get(j)).intValue();
-					groupMap[i][id] = 1;
+					int id = nameAndId.get(tmpG).intValue();
+					groupMap[g][id] = 1;
 				}
+				g++;
+				
 			}
+			
 			// 3. diagonal has X
 			for(int i = 0; i< numOfnode; i++)
 			{
