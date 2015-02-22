@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Mutex {
 	MessagePasser mp;
-	public volatile MutexState st=MutexState.HOLD;
+	public volatile MutexState st=MutexState.RELEASE;
 	int req, reqrec,rel, relrec,vote,enter;
 	public LinkedList<Message> holdBackQueueList = new LinkedList<Message>();
 	public boolean voted;
@@ -23,7 +23,6 @@ public class Mutex {
 		votes=new HashSet<String>();
 		for(String hold: mp.groups.get("Group_"+mp.username))
 		{
-			if(hold.equals(mp.username)==false)
 			voteMem.add(hold);
 		}
 	}
@@ -181,7 +180,7 @@ public class Mutex {
 			mp.lt.Increment();
 		}else
 			mp.vt.Increment(mp.u2i.get(mes.src));
-		if(vote==groupSize-1)
+		if(vote==groupSize)
 		{
 			enter++;
 			System.out.println("enter CS");

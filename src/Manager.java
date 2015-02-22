@@ -40,7 +40,7 @@ public class Manager {
 			System.out.println("error exit in init");
 		}
 		while(true){
-			System.out.println("Enter the command : send, rec, lrec, print, issue, multicast");
+			System.out.println("####Enter the command : send, rec, lrec, print, issue, multicast,request,release,stat,check###");
 			String cm="";
 			try {
 				cm = in.readLine();
@@ -128,6 +128,7 @@ public class Manager {
 					if(hold.length!=2)
 					{
 						System.out.println("request#y/n");
+						continue;
 					}
 					if(messagePasser.valid==false)
 					{
@@ -141,6 +142,7 @@ public class Manager {
 					if(hold.length!=2)
 					{
 						System.out.println("release#y/n");
+						continue;
 					}
 					if(hold[1].equals("y"))
 						messagePasser.log=true;

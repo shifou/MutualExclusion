@@ -60,7 +60,7 @@ public class Multicast {
 		int[] recVec = mes.multicastVector;
 		int length = mes.groupSize;
 		int[] curVec = new int[length];
-		System.out.print("rec: "+mes.getMultiVector()+" \nnow: ");
+		//System.out.print("rec: "+mes.getMultiVector()+" \nnow: ");
 		for(int i=0; i<length; i++){
 			curVec[i] =  (vectorMap.get(mes.groupName))[i];
 
@@ -71,7 +71,7 @@ public class Multicast {
 		//System.out.println("\n"+check);
 		switch(check){
 		case "rec":
-			System.out.println("receive multicast");//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
+			//System.out.println("receive multicast");//+ "size of queue is" +this.holdBackQueueList.get(mes.groupName).size());
 			if(mes.mutex)
 			{
 				System.out.println("add to mutex");
@@ -119,7 +119,7 @@ public class Multicast {
 				{
 					break;
 				}else{
-					System.out.println("accept message from buffer");
+					//System.out.println("accept message from buffer");
 					if(mes.mutex)
 					{
 						System.out.println("add to mutex");
@@ -137,10 +137,10 @@ public class Multicast {
 			}
 			break;
 		case "drop":
-			System.out.println("drop multicast");
+			//System.out.println("drop multicast");
 			break;
 		case "hold":
-			System.out.println("holdback multicast");
+			//System.out.println("holdback multicast");
 			insert(this.holdBackQueueList.get(mes.groupName),mes);
 			break;
 		}
