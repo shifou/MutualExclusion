@@ -89,14 +89,13 @@ configuration :
 
 
 sendRules :
-  - action : delay     
+  - action : aa     
     dest   : def
     kind   : Ack
 receiveRules :
-  - action : drop
-    src    : alice
-    kind   : tt
-    dest   : bob
+  - action : a
+    src    : bob
+    kind   : request
 
   # - action : ss 
   #   src    : alice
