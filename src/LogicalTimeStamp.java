@@ -18,7 +18,7 @@ public class LogicalTimeStamp implements Serializable{
 			Logical = logical;
 		}
 		
-		public void Increment()
+		public synchronized void Increment()
 		{
 			Logical++;
 		}
