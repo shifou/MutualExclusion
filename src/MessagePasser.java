@@ -54,6 +54,7 @@ public class MessagePasser {
 			return;
 		}
 		log=false;
+		valid = config.valid();
 		groups = config.getGroups();
 		nodeNum = config.getSize();  // starts from 1;
 		//System.out.println("---"+nodeNum);
@@ -115,6 +116,9 @@ public class MessagePasser {
 			System.out.println("can not find the user");
 			return false;
 		}
+		valid = config.valid();
+		groups = config.getGroups();
+		nodeNum = config.getSize();  // starts from 1;
 		u2i=config.getAllID();
 		nodes= config.getNetMap(username);
 		//System.out.println(nodes);

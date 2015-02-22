@@ -82,7 +82,13 @@ public class configFileParse {
 			    
 			  
 			}
-		
+		public boolean valid()
+		{
+			if(properThree && properFour)
+				 return true;
+			else
+				return false;
+		}
 		@SuppressWarnings("unchecked")
 		private void checkGroups()
 		{

@@ -78,6 +78,8 @@ public class Mutex {
 			Message vote = mes.clone(mes);
 			vote.set_src(mp.username);
 			vote.set_hostname(mp.username);
+			vote.multicast=false;
+			vote.mutex=false;
 			vote.des = mes.src;
 			vote.data = "OK";
 			vote.kind = "Vote";
@@ -192,10 +194,20 @@ public class Mutex {
 		switch(mes.ms)
 		{
 		case REQUEST:
-			this.recRequest(mes);   //TODO:
+			try {
+				this.recRequest(mes);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println("request rec error");
+			}   //TODO:
 			break;
 		case  RELEASE:
-			this.recRelease(mes);
+			try {
+				this.recRelease(mes);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println("release rec error");
+			}
 			break;
 		case VOTE:
 			this.recVote(mes);
