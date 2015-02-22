@@ -41,7 +41,10 @@ public class Multicast {
 				mp.send(hold);
 			}else{
 				if(message.mutex)
+				{	
+					message.des=message.src;
 					mp.mutex.receive(message);
+				}
 				else
 				mp.messages.offer(message);
 			}
