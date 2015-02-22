@@ -9,7 +9,7 @@ public class Mutex {
 	MessagePasser mp;
 	MutexState st=MutexState.HOLD;
 	int req, reqrec,rel, relrec,vote,enter;
-	public HashMap<String,LinkedList<Message>> holdBackQueueList = new HashMap<String,LinkedList<Message>>();
+	public LinkedList<Message> holdBackQueueList = new LinkedList<Message>();
 	public boolean voted;
 	public HashSet<String> voteMem;
 	public int groupSize;
@@ -49,25 +49,31 @@ public class Mutex {
 		new LockWatcher(this).start();
 	}
 	
-	public void recRequest(Message mes)
+	public void recRequest(Message mes) throws FileNotFoundException
 	{
 		if(voted == true)
 		{
-			if(insert(reqQueue,mes) == 1) // insert successfully
+			if(insert(holdBackQueueList,mes) == 1) // insert successfully
 			{
 				this.reqrec++;
 			}
 		}else{			//if it hasn't voted yet, vote immediately
 			
-			this.sendVote(mes.des);
+			this.sendVote(mes);
 			this.reqrec++;
 			voted = true;
 		}	
 		
 	}
-		private void sendVote(String dest) throws FileNotFoundException
+		private void sendVote(Message mes) throws FileNotFoundException
 		{
-			Message vote = new Message(mp.username, dest, "Agree", "Vote", "OK");
+			Message vote = mes.clone(mes);
+			vote.set_src(mp.username);
+			vote.set_hostname(mp.username);
+			vote.des = mes.src;
+			vote.data = "OK";
+			vote.kind = "Vote";
+			vote.action = "normal";
 			vote.ms = MutexState.VOTE;
 			mp.send(vote);
 			
@@ -86,20 +92,24 @@ public class Mutex {
 			Message tmp = linkedList.get(i);
 	
 			
-			if(mes.lt.getLogical() <= tmp.lt.getLogical())
+			if(mes.lt.getLogical() < tmp.lt.getLogical())
 			{
 				linkedList.add(i,mes);
-				return 1;
-			}else if(mes.lt.getLogical() == tmp.lt.getLogical())
+				break;
+			}else if(mes.lt.getLogical() >= tmp.lt.getLogical())
 			{
-				return 0; // if mes's logical time stamp equals timestamp in the queue, drop it
+				if(i != tmp.multicastVector.length-1)
+				{
+					linkedList.add(i+1,mes);
+					break;
+				}else{
+					linkedList.addLast(mes);
+					break;
+				}
+					
 			}
 			
-			if(i == tmp.multicastVector.length-1)
-			{
-				linkedList.addLast(mes);
-				return 1;
-			}
+			
 		}
 		return 0;
 	}
@@ -137,15 +147,16 @@ public class Mutex {
 	 * 			b. if queue is empty, don't vote
 	 */
 	
-	public void recRelease(Message mes)
+	public void recRelease(Message mes) throws FileNotFoundException
 	{
 		this.voted = false;
 		this.relrec++;
-		if(!reqQueue.isEmpty())
+		if(!holdBackQueueList.isEmpty())
 		{
-			
-			this.sendVote(mes.des);
+			Message tmp = holdBackQueueList.removeFirst();
+			this.sendVote(tmp);
 		}
+		
 		
 	}
 	
