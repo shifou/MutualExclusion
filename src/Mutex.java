@@ -183,6 +183,7 @@ public class Mutex {
 			mp.vt.Increment(mp.u2i.get(mes.src));
 		if(vote==groupSize-1)
 		{
+			enter++;
 			System.out.println("enter CS");
 			vote=0;
 			votes.clear();

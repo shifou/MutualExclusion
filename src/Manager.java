@@ -125,6 +125,10 @@ public class Manager {
 				}
 					break;
 				case "request":
+					if(hold.length!=2)
+					{
+						System.out.println("request#y/n");
+					}
 					if(messagePasser.valid==false)
 					{
 						System.out.println("group construction rules failed");
@@ -134,12 +138,19 @@ public class Manager {
 						messagePasser.log=true;
 				messagePasser.mutex.request();
 				case "release":
+					if(hold.length!=2)
+					{
+						System.out.println("release#y/n");
+					}
 					if(hold[1].equals("y"))
 						messagePasser.log=true;
 				messagePasser.mutex.release();
 				break;
 				case "stat":
 					System.out.println(messagePasser.mutex.stat());
+					break;
+				case "check":
+					System.out.println(messagePasser.mutex.st);
 					break;
 				default:
 					System.err.println("Illegal input format! Please enter again!");
