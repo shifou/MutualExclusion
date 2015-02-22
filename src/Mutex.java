@@ -183,11 +183,6 @@ public class Mutex {
 		if(!votes.contains(mes.src)&&voteMem.contains(mes.src))
 			votes.add(mes.src);
 
-<<<<<<< HEAD
-
-		System.out.println("have votes: "+ this.vote+" total need: "+this.groupSize);
-=======
->>>>>>> 2cb4018dcb27e09427289bcdcf6e220d93b703ac
 
 		System.out.println("have votes: "+ this.vote+" total need: "+this.groupSize);
 		if(mp.logicalTime)
