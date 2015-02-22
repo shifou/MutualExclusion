@@ -23,7 +23,7 @@ public class LogicalTimeStamp implements Serializable{
 			Logical++;
 		}
 		
-		public void updateTimeStamp(LogicalTimeStamp base)
+		public synchronized void updateTimeStamp(LogicalTimeStamp base)
 		{
 			Logical = Math.max(Logical, base.getLogical());
 		}

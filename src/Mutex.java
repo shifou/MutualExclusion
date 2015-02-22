@@ -184,11 +184,7 @@ public class Mutex {
 			votes.add(mes.src);
 
 		System.out.println("have votes: "+ this.vote+" total need: "+this.groupSize);
-		if(mp.logicalTime)
-		{
-			mp.lt.Increment();
-		}else
-			mp.vt.Increment(mp.u2i.get(mes.src));
+		
 		if(vote==groupSize)
 		{
 			enter++;
@@ -200,6 +196,12 @@ public class Mutex {
 	}
 
 	public synchronized void receive(Message mes) {
+		if(mp.logicalTime)
+		{	
+			mp.lt.updateTimeStamp(mes.lt);
+			mp.lt.Increment();
+		}else
+			mp.vt.Increment(mp.u2i.get(mes.src));
 		switch(mes.ms)
 		{
 		case REQUEST:
