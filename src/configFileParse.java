@@ -85,7 +85,11 @@ public class configFileParse {
 		public boolean valid()
 		{
 			if(properThree && properFour)
+			{
+				if((properOne && properTwo)==false)
+					System.out.println("warning! not all rules fulfilled");
 				 return true;
+			}
 			else
 				return false;
 		}
