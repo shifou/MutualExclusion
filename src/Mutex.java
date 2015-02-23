@@ -46,7 +46,7 @@ public class Mutex {
 		message.logicalTime=true;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=mp.groups.get(message.groupName).size();
-		message.lt=mp.lt;
+		message.lt=mp.lt.clone(mp.lt);
 		message.seq=mp.seq;
 		try {
 			mp.multicast.send(message);
@@ -88,7 +88,7 @@ public class Mutex {
 			vote.des = mes.src;
 			vote.data = "OK";
 			vote.seq=mp.seq;
-			vote.lt=mp.lt;
+			vote.lt=mp.lt.clone(mp.lt);
 			vote.kind = "Vote";
 			vote.action = "normal";
 			vote.ms = MutexState.VOTE;
@@ -99,9 +99,10 @@ public class Mutex {
 		// TODO Auto-generated method stub
 		if(linkedList.isEmpty())
 		{
-			Message tmp = new Message("","","","","");
-			tmp = mes.clone(mes);
-			tmp.lt = mes.lt;
+
+			Message tmp = mes.clone(mes);
+			tmp.lt=mes.lt.clone(mes.lt);
+
 			linkedList.add(tmp);
 			System.out.println("===========");
 			System.out.println(linkedList);
@@ -116,9 +117,10 @@ public class Mutex {
 			
 			if(mes.lt.getLogical() < tmp.lt.getLogical())
 			{
-				Message tp = new Message("","","","","");
-				tp = mes.clone(mes);
-				tp.lt = mes.lt;
+
+				Message tp = mes.clone(mes);
+				tp.lt=mes.lt.clone(mes.lt);
+
 				linkedList.add(i,tp);
 				
 				break;
@@ -126,16 +128,18 @@ public class Mutex {
 			{
 				if(i != tmp.multicastVector.length-1)
 				{
-					Message tp = new Message("","","","","");
-					tp=mes.clone(mes);
-					tp.lt = mes.lt;
+
+					Message tp = mes.clone(mes);
+					tp.lt=mes.lt.clone(mes.lt);
+
 					linkedList.add(i+1,tp);
 					
 					break;
 				}else{
-					Message tp = new Message("","","","","");
-					tp=mes.clone(mes);
-					tp.lt = mes.lt;
+
+					Message tp = mes.clone(mes);
+					tp.lt=mes.lt.clone(mes.lt);
+
 					linkedList.addLast(tp);
 					
 					break;
@@ -168,7 +172,7 @@ public class Mutex {
 		message.seq=mp.seq;
 		message.groupName="Group_"+mp.username;
 		message.groupSize=groupSize;
-		message.lt=mp.lt;
+		message.lt=mp.lt.clone(mp.lt);
 		st=MutexState.RELEASE;
 		try {
 			mp.multicast.send(message);

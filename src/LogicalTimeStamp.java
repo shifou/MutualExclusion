@@ -6,7 +6,11 @@ public class LogicalTimeStamp implements Serializable{
 	private static final long serialVersionUID = 3185670617192875966L;
 		private int Logical;
 
-		
+		public LogicalTimeStamp clone(LogicalTimeStamp old){
+			LogicalTimeStamp fk=new LogicalTimeStamp();
+			fk.setLogical(old.getLogical());
+			return fk;
+		}
 		public LogicalTimeStamp(){
 			setLogical(0);	
 		}

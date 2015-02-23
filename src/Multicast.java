@@ -171,6 +171,7 @@ public class Multicast {
 			{
 				Message hold = mes.clone(mes);
 				//hold.src = mp.username;
+				hold.lt=mes.lt;
 				hold.des = group.get(i);
 				System.out.println("forward: "+hold.toString());
 				
