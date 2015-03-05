@@ -5,36 +5,25 @@ groups :
     - alice
     - bob
     - charlie
+    - daphnie
 - name : Group_bob
   members :
+    - alice
     - bob
+    - charlie
     - daphnie
-    - frank
 - name : Group_charlie
   members :
+    - alice
+    - bob
     - charlie
-    - eason
-    - frank
+    - daphnie
 - name : Group_daphnie
   members :
     - alice
-    - daphnie
-    - eason
-- name : Group_eason
-  members :
     - bob
-    - eason
-    - gorgie
-- name : Group_frank
-  members :
-    - alice
-    - frank
-    - gorgie
-- name : Group_gorgie
-  members :
     - charlie
     - daphnie
-    - gorgie
 
 configuration :
 - name : alice
@@ -42,59 +31,42 @@ configuration :
   port : 12341
   memberOf:
     - Group_alice
+    - Group_bob
+    - Group_charlie
     - Group_daphnie
-    - Group_frank
 - name : bob
   ip   : 127.0.0.1
   port : 12342
   memberOf:
     - Group_alice
     - Group_bob
-    - Group_eason
+    - Group_charlie
+    - Group_daphnie
 - name : charlie
   ip   : 127.0.0.1
   port : 12343
   memberOf:
     - Group_alice
+    - Group_bob
     - Group_charlie
-    - Group_gorgie
+    - Group_daphnie
 - name : daphnie
   ip   : 127.0.0.1
   port : 12344
   memberOf:
-    - Group_bob
-    - Group_daphnie
-    - Group_gorgie
-- name : eason
-  ip   : 127.0.0.1
-  port : 12345
-  memberOf:
-    - Group_charlie
-    - Group_daphnie
-    - Group_eason
-- name : frank
-  ip   : 127.0.0.1
-  port : 12346
-  memberOf:
+    - Group_alice
     - Group_bob
     - Group_charlie
-    - Group_frank
-- name : gorgie
-  ip   : 127.0.0.1
-  port : 12347
-  memberOf:
-    - Group_eason
-    - Group_frank
-    - Group_gorgie
-
+    - Group_daphnie
 
 sendRules :
   - action : delay    
     src    : bob
     dest   : daphnie
     kind   : Request
+
 receiveRules :
-  - action : dd
+  - action : delay
     src    : bob
     kind   : Request
 
