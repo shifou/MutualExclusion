@@ -89,7 +89,7 @@ configuration :
 
 
 sendRules :
-  - action : drop    
+  - action : delay    
     src    : bob
     dest   : daphnie
     kind   : Request
